@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '../App';
 import { UserRole, Profile, Department, Teacher, SchoolYear, Activity, Participation, ParticipationStatus } from '../types';
@@ -203,6 +204,19 @@ const TeacherManager: React.FC = () => {
         }
     };
 
+    const handleExport = () => {
+        const dataToExport = teachers.map(teacher => ({
+            "Mã nhân viên": teacher.employee_id,
+            "Tên giáo viên": teacher.full_name,
+            "Tên tổ": teacher.departments?.name || ''
+        }));
+
+        const ws = XLSX.utils.json_to_sheet(dataToExport);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Danh sách giáo viên");
+        XLSX.writeFile(wb, "Danh_sach_giao_vien.xlsx");
+    };
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             setFile(e.target.files[0]);
@@ -256,6 +270,7 @@ const TeacherManager: React.FC = () => {
         <Card>
             <CardHeader title="Quản lý Giáo viên">
                 <div className="flex gap-2">
+                    <Button variant="secondary" onClick={handleExport}><DownloadIcon /> Export Excel</Button>
                     <Button variant="secondary" onClick={() => setIsImportModalOpen(true)}><UploadIcon /> Import Excel</Button>
                     <Button onClick={() => handleOpenModal()}><PlusIcon /> Thêm mới</Button>
                 </div>
