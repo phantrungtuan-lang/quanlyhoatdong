@@ -1,0 +1,5 @@
+{
+  "name": "Teacher Activity Manager",
+  "description": "An application to manage teacher participation in school activities, with role-based access for admins, department heads, and teachers. Built with React, TypeScript, and Supabase.",
+  "requestFramePermissions": []
+}
